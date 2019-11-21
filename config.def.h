@@ -10,6 +10,7 @@ static int borderpx = 2;
 
 static char *default_title = "st";
 static char **default_cmd = NULL;
+static int window_borderless = 1;
 
 /*
  * What program is execed by st depends of these precedence rules:

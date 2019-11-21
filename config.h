@@ -10,6 +10,7 @@ static int borderpx = 0;
 
 static char *default_title = "Terminal";
 static char *default_cmd[] = { "tmux" };
+static int window_borderless = 1;
 
 /*
  * What program is execed by st depends of these precedence rules:

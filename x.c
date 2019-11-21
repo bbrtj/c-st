@@ -152,6 +152,7 @@ static void xinit(int, int);
 static void cresize(int, int);
 static void xresize(int, int);
 static void xhints(void);
+static void xborderless(void);
 static int xloadcolor(int, const char *, Color *);
 static int xloadfont(Font *, FcPattern *);
 static void xloadfonts(char *, double);
@@ -855,6 +856,46 @@ xhints(void)
 	XFree(sizeh);
 }
 
+void
+xborderless(void)
+{
+	// This is quite ugly but still supported way of doing this
+	if (window_borderless) {
+
+		struct MwmHints {
+			unsigned long flags;
+			unsigned long functions;
+			unsigned long decorations;
+			long input_mode;
+			unsigned long status;
+		};
+
+		enum {
+			MWM_HINTS_FUNCTIONS = (1L << 0),
+			MWM_HINTS_DECORATIONS =  (1L << 1),
+
+			MWM_FUNC_ALL = (1L << 0),
+			MWM_FUNC_RESIZE = (1L << 1),
+			MWM_FUNC_MOVE = (1L << 2),
+			MWM_FUNC_MINIMIZE = (1L << 3),
+			MWM_FUNC_MAXIMIZE = (1L << 4),
+			MWM_FUNC_CLOSE = (1L << 5)
+		};
+
+		Atom mwmHintsProperty = XInternAtom(xw.dpy, "_MOTIF_WM_HINTS", 0);
+		struct MwmHints hints;
+		hints.flags = MWM_HINTS_DECORATIONS;
+		hints.decorations = 0;
+		XChangeProperty(xw.dpy, xw.win, mwmHintsProperty, mwmHintsProperty, 32,
+			PropModeReplace, (unsigned char *)&hints, 5);
+
+		Atom wm_state   = XInternAtom(xw.dpy, "_NET_WM_STATE", 1);
+		Atom wm_fullscreen = XInternAtom(xw.dpy, "_NET_WM_STATE_FULLSCREEN", 1);
+		XChangeProperty(xw.dpy, xw.win, wm_state, XA_ATOM, 32,
+			PropModeReplace, (unsigned char *)&wm_fullscreen, 1);
+	}
+}
+
 int
 xgeommasktogravity(int mask)
 {
@@ -1178,6 +1219,7 @@ xinit(int cols, int rows)
 	win.mode = MODE_NUMLOCK;
 	resettitle();
 	xhints();
+	xborderless();
 	XMapWindow(xw.dpy, xw.win);
 	XSync(xw.dpy, False);
 
