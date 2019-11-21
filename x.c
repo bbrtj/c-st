@@ -2016,9 +2016,11 @@ main(int argc, char *argv[])
 run:
 	if (argc > 0) /* eat all remaining arguments */
 		opt_cmd = argv;
+	else
+		opt_cmd = default_cmd;
 
 	if (!opt_title)
-		opt_title = (opt_line || !opt_cmd) ? "st" : opt_cmd[0];
+		opt_title = default_title;
 
 	setlocale(LC_CTYPE, "");
 	XSetLocaleModifiers("");
