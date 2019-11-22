@@ -890,9 +890,12 @@ xborderless(void)
 			PropModeReplace, (unsigned char *)&hints, 5);
 
 		Atom wm_state   = XInternAtom(xw.dpy, "_NET_WM_STATE", 1);
-		Atom wm_fullscreen = XInternAtom(xw.dpy, "_NET_WM_STATE_FULLSCREEN", 1);
+		Atom wm_max_v = XInternAtom(xw.dpy, "_NET_WM_STATE_MAXIMIZED_VERT", 1);
+		Atom wm_max_h = XInternAtom(xw.dpy, "_NET_WM_STATE_MAXIMIZED_HORZ", 1);
 		XChangeProperty(xw.dpy, xw.win, wm_state, XA_ATOM, 32,
-			PropModeReplace, (unsigned char *)&wm_fullscreen, 1);
+			PropModeReplace, (unsigned char *)&wm_max_h, 1);
+		XChangeProperty(xw.dpy, xw.win, wm_state, XA_ATOM, 32,
+			PropModeAppend, (unsigned char *)&wm_max_v, 1);
 	}
 }
 
