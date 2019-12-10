@@ -10,7 +10,7 @@ static int borderpx = 0;
 
 static char *default_title = "Terminal";
 static char *default_cmd[] = { "tmux" };
-static int window_borderless = 1;
+static int window_borderless = 0;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -29,7 +29,7 @@ char *vtiden = "\033[?6c";
 
 /* Kerning / character bounding-box multipliers */
 static float cwscale = 1.0;
-static float chscale = 1.1;
+static float chscale = 1.05;
 
 /*
  * word delimiter string
@@ -87,45 +87,38 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.75;
+float alpha = 0.92;
 
-/* Rasi theme */
+/* Gruvbox theme */
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-
-	/* 8 normal colors */
-	[0] = "#1b1d1e", /* black   */
-	[1] = "#f92672", /* red     */
-	[2] = "#82b414", /* green   */
-	[3] = "#fd971f", /* yellow  */
-	[4] = "#4e82aa", /* blue    */
-	[5] = "#8c54fe", /* magenta */
-	[6] = "#465457", /* cyan    */
-	[7] = "#ccccc6", /* white   */
-
-	/* 8 bright colors */
-	[8]  = "#505354", /* black   */
-	[9]  = "#ff5995", /* red     */
-	[10] = "#b6e354", /* green   */
-	[11] = "#feed6c", /* yellow  */
-	[12] = "#0c73c2", /* blue    */
-	[13] = "#9e6ffe", /* magenta */
-	[14] = "#899ca1", /* cyan    */
-	[15] = "#f8f8f2", /* white   */
-
-	/* special colors */
-	[256] = "#000000", /* background */
-	[257] = "#ffffff", /* foreground */
+	"#1d2021", /* hard contrast: #1d2021 / soft contrast: #32302f */
+	"#cc241d",
+	"#98971a",
+	"#d79921",
+	"#458588",
+	"#b16286",
+	"#689d6a",
+	"#a89984",
+	"#928374",
+	"#fb4934",
+	"#b8bb26",
+	"#fabd2f",
+	"#83a598",
+	"#d3869b",
+	"#8ec07c",
+	"#ebdbb2",
 };
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor
  */
-unsigned int defaultfg = 257;
-unsigned int defaultbg = 256;
-static unsigned int defaultcs = 257;
-static unsigned int defaultrcs = 13;
+
+unsigned int defaultfg = 15;
+unsigned int defaultbg = 0;
+static unsigned int defaultcs = 15;
+static unsigned int defaultrcs = 15;
 
 /*
  * Default shape of cursor
@@ -161,7 +154,7 @@ static unsigned int defaultattr = 11;
  * Note that if you want to use ShiftMask with selmasks, set this to an other
  * modifier, set to 0 to not use it.
  */
-static uint forcemousemod = ShiftMask;
+static uint forcemousemod = 0;
 
 /*
  * Internal mouse shortcuts.
