@@ -9,7 +9,7 @@ static char *font = "Droid Sans Mono:pixelsize=14:antialias=true:autohint=true";
 static int borderpx = 0;
 
 static char *default_title = "Terminal";
-static char *default_cmd[] = { "tmux" };
+static char **default_cmd = NULL;
 static int window_borderless = 0;
 
 /*
