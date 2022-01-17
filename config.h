@@ -22,6 +22,8 @@ static int window_borderless = 0;
  */
 static char *shell = "/bin/bash";
 char *utmp = NULL;
+/* scroll program: to enable use a string like "scroll" */
+char *scroll = NULL;
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
 /* identification sequence returned in DA and DECID */
@@ -45,9 +47,18 @@ static unsigned int tripleclicktimeout = 600;
 /* alt screens */
 int allowaltscreen = 1;
 
-/* frames per second st should at maximum draw to the screen */
-static unsigned int xfps = 120;
-static unsigned int actionfps = 30;
+/* allow certain non-interactive (insecure) window operations such as:
+   setting the clipboard text */
+int allowwindowops = 1;
+
+/*
+ * draw latency range in ms - from new content/keypress/etc until drawing.
+ * within this range, st draws when content stops arriving (idle). mostly it's
+ * near minlatency, but it waits longer for slow updates to avoid partial draw.
+ * low minlatency will tear/flicker more, as it can "detect" idle too early.
+ */
+static double minlatency = 8;
+static double maxlatency = 33;
 
 /*
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
@@ -84,7 +95,7 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 8;
+unsigned int tabspaces = 4;
 
 /* bg opacity */
 float alpha = 0.92;
@@ -117,7 +128,7 @@ static const char *colorname[] = {
 
 unsigned int defaultfg = 15;
 unsigned int defaultbg = 0;
-static unsigned int defaultcs = 15;
+unsigned int defaultcs = 15;
 static unsigned int defaultrcs = 15;
 
 /*
